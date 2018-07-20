@@ -125,7 +125,12 @@ namespace GameSolver { namespace Connect4 {
       {
         for(unsigned int i = 0; i < seq.size(); i++) {
           int col = seq[i] - '1';
-          if(col < 0 || col >= Position::WIDTH || !canPlay(col) || isWinningMove(col)) return i; // invalid move
+	  if(col < 0 || col >= Position::WIDTH || !canPlay(col) || isWinningMove(col)) {//invalid move
+		  if(isWinningMove(col)){
+			  return -2;
+		  }
+		  return -1;
+	  }
           playCol(col);
         }
         return seq.size();

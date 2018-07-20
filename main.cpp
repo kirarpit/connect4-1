@@ -43,31 +43,41 @@ unsigned long long getTimeMicrosec() {
  *  Any invalid position (invalid sequence of move, or already won game)
  *  will generate an error message to standard error and an empty line to standard output.
  */
+
+int solve(Solver &solver, std::string line);
+
+unsigned long long start_time = getTimeMicrosec();
+
 int main(int argc, char** argv) {
+	Solver solver;
+	if (argc > 1){
+		std::string line="";
+		std::string null="null";
 
-  Solver solver;
+		if (null.compare(argv[1]) != 0)
+			line = argv[1];
 
-  bool weak = false;
-  if(argc > 1 && argv[1][0] == '-' && argv[1][1] == 'w') weak = true;
+		for (int j=1; j<=Position::WIDTH; j++){
+			std::cout<<solve(solver, line + std::to_string(j))<<" ";
+		}
+		std::cout << std::endl;
+	}
 
-  std::string line;
-
-  for(int l = 1; std::getline(std::cin, line); l++) {
-    Position P;
-    if(P.play(line) != line.size())
-    {
-      std::cerr << "Line " << l << ": Invalid move " << (P.nbMoves()+1) << " \"" << line << "\"" << std::endl;
-    }
-    else
-    {
-      solver.reset();
-      unsigned long long start_time = getTimeMicrosec();
-      int score = solver.solve(P, weak);
-      unsigned long long end_time = getTimeMicrosec();
-      std::cout << line << " " << score << " " << solver.getNodeCount() << " " << (end_time - start_time);
-    }
-    std::cout << std::endl;
-  }
+	exit(0);
 }
 
+int solve(Solver &solver, std::string line) {
+	Position P;
+	int score = 0;
+	int result = P.play(line);
 
+	if(result == -1) {//invalid move
+		score = 99;
+	}else if (result == -2) {//has won already
+		score = -99;
+	}else {
+		score = solver.solve(P, false);
+	}
+
+	return score;
+}
