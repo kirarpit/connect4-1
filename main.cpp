@@ -18,7 +18,9 @@
 
 #include "solver.hpp"
 #include <iostream>
+#include <fstream>
 #include <sys/time.h>
+#include <cstdio>
 
 using namespace GameSolver::Connect4;
 
@@ -46,23 +48,31 @@ unsigned long long getTimeMicrosec() {
 
 int solve(Solver &solver, std::string line);
 
-unsigned long long start_time = getTimeMicrosec();
-
-int main(int argc, char** argv) {
+int main() {
 	Solver solver;
-	if (argc > 1){
-		std::string line="";
-		std::string null="null";
 
-		if (null.compare(argv[1]) != 0)
-			line = argv[1];
+	std::string lock = "/Users/Arpit/DDQN/src/games/lock";
+	std::string outputFile = "/Users/Arpit/DDQN/src/games/out.txt";
+	std::string line;
+	std::string output = "";
+	for(int l = 1; std::getline(std::cin, line); l++) {
+		//unsigned long long start_time = getTimeMicrosec();
+		output = "";
+		std::ofstream outfile(lock); outfile.close();
 
 		for (int j=1; j<=Position::WIDTH; j++){
-			std::cout<<solve(solver, line + std::to_string(j))<<" ";
+			output.append(std::to_string(solve(solver, line + std::to_string(j))));
+			output.append(" ");
 		}
-		std::cout << std::endl;
-	}
 
+		std::ofstream myfile;
+		myfile.open(outputFile);
+		myfile << output;
+		myfile.close();
+
+		std::remove("/Users/Arpit/DDQN/src/games/lock");
+		//std::cout<<output<<" "<<getTimeMicrosec() - start_time<<std::endl;
+	}
 	exit(0);
 }
 

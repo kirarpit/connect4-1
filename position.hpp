@@ -87,8 +87,8 @@ namespace GameSolver { namespace Connect4 {
   class Position {
     public:
 
-      static const int WIDTH = 7;  // width of the board
-      static const int HEIGHT = 6; // height of the board
+      static const int WIDTH = 6;  // width of the board
+      static const int HEIGHT = 5; // height of the board
       static const int MIN_SCORE = -(WIDTH*HEIGHT)/2 + 3;
       static const int MAX_SCORE = (WIDTH*HEIGHT+1)/2 - 3;
 

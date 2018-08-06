@@ -1,8 +1,8 @@
 import os, pickle, time
 
 start = time.time()
-WIDTH = 7
-fname = '5set.txt'
+WIDTH = 6
+fname = 'out'
 sols = {}
 
 def saveDict(sols):
@@ -12,7 +12,7 @@ def saveDict(sols):
 def mirror(e):
   j = ""
   for i in e:
-    j += str(8 - int(i))
+    j += str(WIDTH + 1 - int(i))
   return j
 
 def getBestMoves(moves):
